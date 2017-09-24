@@ -1,13 +1,31 @@
 import os
 import urllib
 
+import pandas as pd
 import requests
+from statsmodels.tsa.stattools import grangercausalitytests
 
 AUTHORIZE_ENDPOINT = "https://www.fitbit.com"
 
 CLIENT_ID = os.environ['FITBIT_ID']
 CLIENT_SECRET = os.environ['FITBIT_SECRET']
 REDIRECT_URI = 'https://127.0.0.1:3000/fitbit_auth'
+
+# generated placeholder data
+placeholder_insights = pd.read_csv('insights.csv', header=None, names=['ds', 'y'])
+placeholder_activity = pd.read_csv('/Users/datatron/Downloads/fitbit.csv', header=0, names=['ds', 'activity_time'])
+
+
+def get_json():
+    placeholder_activity.to_json()
+
+
+def compute_casuality(data=placeholder_insights, data2=placeholder_activity):
+    merged = pd.merge(data,data2, on=['ds','ds'])
+    m = merged[['y','activity_time']].as_matrix()
+    result = grangercausalitytests(m, maxlag=5)
+    return result[2][0]['lrtest'][1]
+
 
 def get_fitbit_auth_url():
     data = {}

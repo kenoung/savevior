@@ -4,7 +4,7 @@ from functools import wraps
 from flask import g, request, redirect, url_for
 
 from citi_api import get_login_url, get_access_refresh_token, get_accounts, get_transactions, get_profile
-from fitbit_api import get_fitbit_auth_url, exchange_for_credentials_fitbit, get_activity_time_series
+from fitbit_api import get_fitbit_auth_url, exchange_for_credentials_fitbit, get_activity_time_series, compute_casuality
 from forecasting import weekly, yearly, monthly
 from sleep_api import exchange_for_credentials
 
@@ -65,6 +65,9 @@ def main():
         if not session.get('fitbit'):
             fitbit_login = get_fitbit_auth_url()
 
+        if not session.get('weather_casuality'):
+            session['weather_casuality'] = 0.9
+
         return render_template('index.html', first_name=first_name, fitbit_login=fitbit_login)
 
 
@@ -106,6 +109,7 @@ def fitbit_auth():
     code = request.args.get('code')
     access_token = exchange_for_credentials_fitbit(code)
     session['fitbit'] = access_token
+    session['fitbit_casuality'] = compute_casuality()
     return redirect(url_for('main'))
 
 

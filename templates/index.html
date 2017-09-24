@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Save-vior | Home</title>
+    <title>Savevior | Home</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 
     <!-- Favicon ================== -->
@@ -32,10 +32,13 @@
             <img src="static/img/Logomakr_6SKoM4.png" alt="" class="main-logo" />
 
             <div class="h-content">
-                <h1>Save-vior<br> Hello, {{ first_name }}</h1>
+                <h1>Save-vior<br> Hello, Jacob</h1>
                 <h3>CITI BANK ACCOUNTS</h3>
                 <p>Citi Core Checking Account - </p>
                 <p>Citi Savings Account - </p>
+                <div class="price consecteturl-sm-4 col-xs-4">
+                    <h4><a href="logout">Log Out</a></h4>
+              </div>
             </div>
 
         </div>
@@ -49,33 +52,37 @@
             <div class="service row">
                 <div class="feature col-sm-4 col-xs-4">
                     <div class="container">
-                        <i class="ion-android-alarm-clock"></i>
                         <div class="overlay">
-                            <a href="http://127.0.0.1:1337/Connect.html">
-                                <div class="text">Connect To</div></a>
+                                <div class="text">Connect To</div>
                         </div> </div>
+
+                    <i class="ion-android-alarm-clock" {% if not session['sleep'] %}
+                       style="opacity: 0"
+                    {% endif %}></i>
                     <h6>SLEEP</h6>
                 </div>
 
                 <div class="feature col-sm-4 col-xs-4">
                     <i class="ion-ios-partlysunny"></i>
-                    <h6>WEATHER</h6>
+                    <h6>WEATHER</h6>{% if session['weather_casuality'] and session['weather_casuality'] > 0.05 %} <p class="small" style="color:gray">No effect on your spending</p> {% endif %}
                 </div>
 
-                <div class="feature col-sm-4 col-xs-4">
+                <div class="feature col-sm-4 col-xs-4" >
                     <div class="container">
-
-                        <a href="{{fitbit_login}}" {% if session['fitbit'] %} style="display: None;"{% endif %}>
-                        <div class="overlay">
+                        <a href="{{ fitbit_login }}" {% if session['fitbit'] %}
+                       style="display: None;"
+                    {% endif %}>
+                        <div class= "overlay" >
                             <div class="text">Connect To</div>
-                        </div>
+                        </div></a> </div>
 
-                        </a>
-                    </div>
-                    <i class="ion-ios-body" {% if not session['fitbit'] %} style="opacity: 0;"{% endif %}></i>
-                    <h6>FITBIT</h6>
+                    <i class="ion-ios-body" {% if not session['fitbit'] %}
+                       style="opacity: 0"
+                    {% endif %}></i>
+                    <h6>FITBIT</h6>{% if session['fitbit_casuality'] and session['fitbit_casuality'] > 0.05 %} <p class="small" style="color:gray">No effect on your spending</p> {% endif %}
+                        {% if session['fitbit'] %}<h5>You had 30 minutes of activity yesterday.</h5>
+                            <h4 style="color:red">You tend to spend 21% more.</h4>{%  endif %}
                 </div>
-
 
             </div>
         </div>
@@ -86,15 +93,13 @@
                 <li class="item col-sm-6 col-xs-12">
                     <figure>
                         <!-- Your picture -->
-                        <div class="col-lg-3 col-md-6" id="kiat1" style='height: 200px'>
+                        <div class="col-lg-3 col-md-6" id="kiat1" style='height: 250px'>
                         </div>
                         <!-- Picture's description below this one -->
                         <figcaption class="caption">
                             <div class="photo-details">
-                                <h4>Music Player</h4>
-                                <span>By Code Rare</span>
+                                <h4>You tend to spend more in the first half of the week.</h4>
                             </div>
-                            <a href="#project1" class="view">VIEW</a>
                         </figcaption>
                     </figure>
                 </li>
@@ -102,16 +107,14 @@
                 <li class="item col-sm-6 col-xs-12">
                     <figure>
                         <!-- Your picture -->
-                        <div class="col-lg-3 col-md-6" id="kiat2" style='height: 200px'>
+                        <div class="col-lg-3 col-md-6" id="kiat2" style='height: 250px'>
                         </div>
 
                         <!-- Picture's description below this one -->
                         <figcaption class="caption">
                             <div class="photo-details">
-                                <h4>Typing</h4>
-                                <span>By Code Rare</span>
+                                <h4>You have a greater propensity to spend during the first half of the month.</h4>
                             </div>
-                            <a href="#project3" class="view">VIEW</a>
                         </figcaption>
                     </figure>
                 </li>
@@ -119,15 +122,13 @@
                 <li class="item col-sm-12 col-xs-12">
                     <figure>
                         <!-- Your picture -->
-                        <div class="col-lg-12 col-md-12 text-center" id="kiat3" style='height: 240px'>
+                        <div class="col-lg-12 col-md-12 text-center" id="kiat3" style='height: 250px'>
                         </div>
                         <!-- Picture's description below this one -->
                         <figcaption class="caption">
-                            <div class="photo-details">
-                                <h4>Camera</h4>
-                                <span>By Code Rare</span>
+                            <div class="photo-details text-center">
+                                <h4>You tend to spend the least in the months of June and Aug.</h4>
                             </div>
-                            <a href="#project4" class="view">VIEW</a>
                         </figcaption>
                     </figure>
                 </li>
@@ -189,7 +190,7 @@
                 height: 200,
                 right: 40,
                 target: '#kiat2',
-                xax_format: d3.timeFormat('%b %d'),
+                xax_format: d3.timeFormat('%d'),
                 xax_count: 4,
                 show_secondary_x_label: false
             });
@@ -199,12 +200,11 @@
             data = MG.convert.date(data, 'date', "%Y-%m-%dT%H:%M:%S.%LZ");
             MG.data_graphic({
                 title: "Yearly Propensity to Spend",
-                description: "You can hide individual data points on a particular attribute by setting missing_is_hidden_accessor. Data points whose y-accessor values are null are also hidden.",
                 data: data,
                 missing_is_hidden: true,
                 missing_is_hidden_accessor: 'dead',
                 width: 500,
-                height: 230,
+                height: 200,
                 right: 40,
                 target: '#kiat3',
                 xax_format: d3.timeFormat('%b'),
