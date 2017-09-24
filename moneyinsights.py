@@ -4,7 +4,8 @@ from functools import wraps
 from flask import g, request, redirect, url_for
 
 from citi_api import get_login_url, get_access_refresh_token, get_accounts, get_transactions, get_profile
-from fitbit_api import get_fitbit_auth_url, exchange_for_credentials_fitbit, get_activity_time_series, compute_casuality
+from fitbit_api import get_fitbit_auth_url, exchange_for_credentials_fitbit, get_activity_time_series, \
+    compute_casuality, get_fitbit_json
 from forecasting import weekly, yearly, monthly
 from sleep_api import exchange_for_credentials
 
@@ -128,6 +129,16 @@ def logout():
     session.clear()
     return redirect(url_for('main'))
 
+
+@app.route('/api/fitbit_data')
+def fitbit_data():
+    return get_fitbit_json()
+
+
+@app.route('/fitbit')
+@login_required
+def fitbit():
+    return render_template('fitbit.html')
 
 if __name__ == '__main__':
     app.secret_key = os.environ['INSIGHTS_SECRET']

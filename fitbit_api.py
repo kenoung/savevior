@@ -16,8 +16,10 @@ placeholder_insights = pd.read_csv('insights.csv', header=None, names=['ds', 'y'
 placeholder_activity = pd.read_csv('/Users/datatron/Downloads/fitbit.csv', header=0, names=['ds', 'activity_time'])
 
 
-def get_json():
-    placeholder_activity.to_json()
+def get_fitbit_json():
+    placeholder_activity.columns = ['date', 'value']
+    placeholder_activity['date'] = pd.to_datetime(placeholder_activity['date'])
+    return placeholder_activity.to_json(orient='records', date_format='iso', double_precision=2)
 
 
 def compute_casuality(data=placeholder_insights, data2=placeholder_activity):

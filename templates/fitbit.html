@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Savevior | Home</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <!-- Favicon ================== -->
+    <!-- Standard -->
+    <link rel="shortcut icon" href="static/img/favicon-144.png">
+    <!-- Retina iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="144x144" href="static/img/favicon-144.png">
+    <!-- Retina iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="114x114" href="static/img/favicon-114.png">
+    <!-- Standard iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="72x72" href="static/img/favicon-72.png">
+    <!-- Standard iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="57x57" href="static/img/favicon-57.png">
+
+    <link href='static/js/metricsgraphics.css' rel='stylesheet'>
+
+    <!--  Resources style ================== -->
+    <link href="static/css/theme-FuchiStudio.css" rel="stylesheet" type="text/css" media="all"/>
+</head>
+<body>
+<section class="animsition">
+
+    <div id="leftSide" class="gradient">
+        <div id="home" >
+            <!-- Your logo -->
+            <img src="static/img/Logomakr_6SKoM4.png" alt="" class="main-logo" />
+
+            <div class="h-content">
+                <h1>Save-vior<br> Hello, Jacob</h1>
+                <h3>CITI BANK ACCOUNTS</h3>
+                <p>Citi Core Checking Account - </p>
+                <p>Citi Savings Account - </p>
+                <div class="price consecteturl-sm-4 col-xs-4">
+                    <h4><a href="logout">Log Out</a></h4>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="rightSide">
+
+        <div class="about">
+
+            <div class="service row">
+                <div class="feature col-sm-4 col-xs-4">
+                    <div class="container">
+                        <div class="overlay">
+                            <div class="text">Connect To</div>
+                        </div> </div>
+
+                    <i class="ion-android-alarm-clock" {% if not session['sleep'] %}
+                       style="opacity: 0"
+                    {% endif %}></i>
+                    <h6>SLEEP</h6>
+                </div>
+
+                <div class="feature col-sm-4 col-xs-4">
+                    <i class="ion-ios-partlysunny"></i>
+                    <h6>WEATHER</h6>{% if session['weather_casuality'] and session['weather_casuality'] > 0.05 %} <p class="small" style="color:gray">No effect on your spending</p> {% endif %}
+                </div>
+
+                <div class="feature col-sm-4 col-xs-4" >
+                    <div class="container">
+                        <a href="{{ fitbit_login }}" {% if session['fitbit'] %}
+                           style="display: None;"
+                        {% endif %}>
+                            <div class= "overlay" >
+                                <div class="text">Connect To</div>
+                            </div></a> </div>
+
+                    <i class="ion-ios-body" {% if not session['fitbit'] %}
+                       style="opacity: 0"
+                    {% endif %}></i>
+                    <h6>FITBIT</h6>{% if session['fitbit_casuality'] and session['fitbit_casuality'] > 0.05 %} <p class="small" style="color:gray">No effect on your spending</p> {% endif %}
+                    {% if session['fitbit'] %}<h5>You had 30 minutes of activity yesterday.</h5>
+                        <h4 style="color:red">You tend to spend 21% more.</h4>{%  endif %}
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="project">
+            <ul class="gallery project_navigation">
+                <li class="item col-sm-12 col-xs-12">
+                    <figure>
+                        <!-- Your picture -->
+                        <div class="col-lg-12 col-md-12 text-center" id="kiat3" style='height: 500px'>
+                        </div>
+                        <!-- Picture's description below this one -->
+                        <figcaption class="caption">
+                            <div class="photo-details">
+                                <h4>User has activity of....</h4>
+                            </div>
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+<script src="static/js/jquery-1.11.3.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/animsition.min.js"></script>
+<script src="static/js/jquery.magnific-popup.min.js"></script>
+<script src="static/js/jquery.countdown.min.js"></script>
+<script src="static/js/masonry.pkgd.min.js"></script>
+<script src="static/js/imagesloaded.pkgd.min.js"></script>
+<script src="static/js/jquery.flexslider-min.js"></script>
+<script src="static/js/photoswipe.min.js"></script>
+<script src="static/js/photoswipe-ui-default.min.js"></script>
+<script src="static/js/jqinstapics.min.js"></script>
+<script src="static/js/twitterFetcher_min.js"></script>
+<script src="static/js/script.js"></script>
+</body>
+</html>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.2/d3.min.js" charset="utf-8"></script>
+
+<script>
+    $(document).ready(function() {
+        d3.json('api/fitbit_data', function(data) {
+            data = MG.convert.date(data, 'date', "%Y-%m-%dT%H:%M:%S.%LZ");
+            MG.data_graphic({
+                title: "Fitbit Activity Over Time",
+                data: data,
+                missing_is_hidden: true,
+                missing_is_hidden_accessor: 'dead',
+                width: 1000,
+                height: 400,
+                right: 40,
+                target: '#kiat3',
+
+            });
+        });
+    });
+
+</script>
+
+<script src='static/js/metricsgraphics.js'></script>
