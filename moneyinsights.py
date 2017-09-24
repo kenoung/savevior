@@ -3,7 +3,8 @@ from flask import Flask, render_template, session, jsonify
 from functools import wraps
 from flask import g, request, redirect, url_for
 
-from citi_api import get_login_url, get_access_refresh_token, get_accounts, get_transactions
+from citi_api import get_login_url, get_access_refresh_token, get_accounts, get_transactions, get_profile
+from fitbit_api import get_fitbit_auth_url, exchange_for_credentials_fitbit, get_activity_time_series
 from forecasting import weekly, yearly, monthly
 from sleep_api import exchange_for_credentials
 
@@ -28,7 +29,6 @@ def logged_in():
 
 @app.route('/login', methods=['GET'])
 def login():
-    print('hi')
     code = request.args.get('code')
     state = request.args.get('state')
     access_token, refresh_token = get_access_refresh_token(code, state)
@@ -53,7 +53,19 @@ def main():
         login_url = get_login_url()
         return render_template('LandingPage.html', login_url=login_url)
     else:
-        return render_template('index.html')
+        if not session.get('profile'):
+            session['profile'] = get_profile(session['access_token'])
+
+        # session['accounts'] = get_accounts(session.get('access_token'))
+        first_name = 'James' # placeholder
+        if session.get('profile'):
+            first_name = session['profile']['customerParticulars']['names'][0]['firstName']
+
+        fitbit_login = None
+        if not session.get('fitbit'):
+            fitbit_login = get_fitbit_auth_url()
+
+        return render_template('index.html', first_name=first_name, fitbit_login=fitbit_login)
 
 
 @app.route('/api/week', methods=['GET'])
@@ -88,9 +100,22 @@ def transactions(account_id):
     return jsonify(session[account_id])
 
 
-@app.route('/api/fake_transaction_data')
-def fakedata():
-    pass
+@app.route('/fitbit_auth')
+@login_required
+def fitbit_auth():
+    code = request.args.get('code')
+    access_token = exchange_for_credentials_fitbit(code)
+    session['fitbit'] = access_token
+    return redirect(url_for('main'))
+
+
+@app.route('/api/fitbit_time_series')
+@login_required
+def fitbit_time_series():
+    if not session.get('fitbit'):
+        return 'not logged into fitbit', 401
+
+    return jsonify(get_activity_time_series(session['fitbit']))
 
 
 @app.route('/logout')

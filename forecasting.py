@@ -7,6 +7,7 @@ from fbprophet import Prophet
 
 # def forecast(data):
 data = pd.read_csv('insights.csv', header=None, names=['ds', 'y'])
+data['y'] = np.log(data['y'])
 m = Prophet()
 m.add_seasonality(name='monthly', period=30.5, fourier_order=5)
 m.fit(data)

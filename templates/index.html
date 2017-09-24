@@ -32,7 +32,7 @@
             <img src="static/img/Logomakr_6SKoM4.png" alt="" class="main-logo" />
 
             <div class="h-content">
-                <h1>Save-vior<br> Hello, Jacob</h1>
+                <h1>Save-vior<br> Hello, {{ first_name }}</h1>
                 <h3>CITI BANK ACCOUNTS</h3>
                 <p>Citi Core Checking Account - </p>
                 <p>Citi Savings Account - </p>
@@ -64,12 +64,18 @@
 
                 <div class="feature col-sm-4 col-xs-4">
                     <div class="container">
-                        <i class="ion-ios-body"></i>
+
+                        <a href="{{fitbit_login}}" {% if session['fitbit'] %} style="display: None;"{% endif %}>
                         <div class="overlay">
                             <div class="text">Connect To</div>
-                        </div> </div>
+                        </div>
+
+                        </a>
+                    </div>
+                    <i class="ion-ios-body" {% if not session['fitbit'] %} style="opacity: 0;"{% endif %}></i>
                     <h6>FITBIT</h6>
                 </div>
+
 
             </div>
         </div>

@@ -14,19 +14,18 @@ REDIRECT_URI = "https://127.0.0.1:3000/login"
 # url endpoints
 ACCOUNT_SUMMARY = '/v1/accounts'
 TRANSACTIONS = '/v1/accounts/{account_id}/transactions'
+PROFILE = '/v1/customers/profiles/basic'
 
 def _call(token, endpoint):
     url = CITI_URL + endpoint
-    print(url)
     unique_id = 'c0d8c1a9-88cf-49d1-a495-c2da4ab10be0' # uuid.uuid4().bytes
     headers = {"Authorization": "Bearer {}".format(token),
                "uuid": str(unique_id),
                "Accept": "application/json",
                "client_id": CLIENT_ID}
-    print(headers)
     r = requests.get(url, headers=headers)
-    print(r.status_code)
-    return r.json()
+    if r.status_code < 300:
+        return r.json()
 
 
 def get_login_url():
@@ -82,4 +81,13 @@ def get_transactions(account_id, token):
     if result.get('httpCode'):
         return
     return result
+
+
+def get_profile(token):
+    result = _call(token, PROFILE)
+    print(result)
+    if not result or result.get('httpCode'):
+        return
+    return result
+
 
