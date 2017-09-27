@@ -45,4 +45,4 @@ series analysis
 
 [Kiat Han Tan](https://www.linkedin.com/in/kiat-han-tan/) - **Frontend Developer/Biz**
 
-[Samuel Chua Te Jie]() - **Biz**
+[Samuel Chua Te Jie](https://samchuatj.wixsite.com/resume) - **Biz**
