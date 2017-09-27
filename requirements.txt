@@ -14,6 +14,7 @@ matplotlib==2.0.2
 numpy==1.13.1
 oauth2client==4.1.2
 pandas==0.20.3
+patsy==0.4.1
 pyasn1==0.3.6
 pyasn1-modules==0.1.4
 pyparsing==2.2.0
@@ -22,6 +23,8 @@ python-dateutil==2.6.1
 pytz==2017.2
 requests==2.18.4
 rsa==3.4.2
+scipy==0.19.1
 six==1.11.0
+statsmodels==0.8.0
 urllib3==1.22
 Werkzeug==0.12.2
