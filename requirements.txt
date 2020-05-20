@@ -5,7 +5,7 @@ cycler==0.10.0
 Cython==0.27
 fbprophet==0.2
 Flask==0.12.2
-httplib2==0.10.3
+httplib2==0.18.0
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.9.6
