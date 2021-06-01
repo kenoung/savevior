@@ -26,5 +26,5 @@ rsa==3.4.2
 scipy==0.19.1
 six==1.11.0
 statsmodels==0.8.0
-urllib3==1.22
+urllib3==1.26.5
 Werkzeug==0.12.2
